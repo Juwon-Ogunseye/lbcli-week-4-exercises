@@ -21,10 +21,10 @@ echo "Extracted vout: $vout"
 recipient="2MvLcssW49n9atmksjwg2ZCMsEMsoj3pzUP"
 amount=20000000  # Amount in satoshis (20,000,000 satoshis)
 
-# Define the locktime (2 weeks in block height, assuming 10 minutes per block)
-locktime=20160  # 2 weeks (in blocks)
+# Define locktime (2 weeks worth of blocks, as given)
+locktime=20160
 
-# Generate the raw transaction with the extracted txid and vout
+# Create the raw transaction with the extracted txid, vout, and locktime
 rawtx=$(bitcoin-cli -regtest createrawtransaction \
 '[ { "txid": "'$txid'", "vout": '$vout' } ]' \
 '{ "'$recipient'": '$amount' }' $locktime)
