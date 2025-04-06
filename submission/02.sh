@@ -4,7 +4,9 @@
 set -x
 
 # Define the transaction ID and vout from the given UTXO
-txid="c8b0928edebbec5e698d5f86d0474595d9f6a5b2e4e3772cd9d1005f23bdef7725"
+#txid="c8b0928edebbec5e698d5f86d0474595d9f6a5b2e4e3772cd9d1005f23bdef7725"
+txid="c8b0928edebbec5e698d5f86d0474595d9f6a5b2e4e3772cd9d1005f23bdef772"  # Correct 64-char TXID
+
 vout=0
 
 # Define the recipient address and amount to send
