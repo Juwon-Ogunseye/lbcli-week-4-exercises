@@ -1,43 +1,32 @@
 #!/bin/bash
 
-# Enable full command tracing
+# Enable debugging so each command is printed
 set -x
 
-# Current block (for calculating locktime)
-current_block=25
+# Define the transaction ID and vout from the given UTXO
+txid="c8b0928edebbec5e698d5f86d0474595d9f6a5b2e4e3772cd9d1005f23bdef7725"
+vout=0
 
-# Decode the raw transaction to extract UTXO details
-transaction="01000000000101c8b0928edebbec5e698d5f86d0474595d9f6a5b2e4e3772cd9d1005f23bdef772500000000ffffffff0276b4fa0000000000160014f848fe5267491a8a5d32423de4b0a24d1065c6030e9c6e000000000016001434d14a23d2ba08d3e3edee9172f0c97f046266fb0247304402205fee57960883f6d69acf283192785f1147a3e11b97cf01a210cf7e9916500c040220483de1c51af5027440565caead6c1064bac92cb477b536e060f004c733c45128012102d12b6b907c5a1ef025d0924a29e354f6d7b1b11b5a7ddff94710d6f0042f3da800000000"
-decoded_tx=$(bitcoin-cli -regtest decoderawtransaction "$transaction")
-
-# Extract UTXO txid and vout without jq (using grep, sed, or awk)
-utxo_txid=$(echo "$decoded_tx" | grep -oP '"txid":\s*"\K[^"]+')
-utxo_vout=$(echo "$decoded_tx" | grep -oP '"vout":\s*\K[0-9]+')
-
-# Debug: Print the UTXO txid and vout (output will appear in GitHub Actions logs)
-echo "UTXO TXID: $utxo_txid"
-echo "UTXO VOUT: $utxo_vout"
-
-# Recipient address and amount to send
+# Define the recipient address and amount to send
 recipient="2MvLcssW49n9atmksjwg2ZCMsEMsoj3pzUP"
 amount=20000000  # Amount in satoshis
 
-# Calculate locktime (current block height + 2 weeks)
-locktime=$(($current_block + 20160))
+# Define the locktime (2 weeks in block height, assuming 10 minutes per block)
+locktime=20160  # 2 weeks (in blocks)
 
-# Debug: Print the locktime value
-echo "Locktime: $locktime"
+# Generate the raw transaction
+rawtx=$(bitcoin-cli -regtest createrawtransaction \
+'[ { "txid": "'$txid'", "vout": '$vout' } ]' \
+'{ "'$recipient'": '$amount' }' $locktime)
 
-# Create the raw transaction with locktime
-rawtxhex=$(bitcoin-cli -regtest createrawtransaction \
-  "[ { \"txid\": \"$utxo_txid\", \"vout\": $utxo_vout } ]" \
-  "{ \"$recipient\": $amount }" \
-  "$locktime")
+echo "Generated Raw Transaction Hex: "
+echo $rawtx
 
-# Debug: Print the generated raw transaction hex (output will appear in GitHub Actions logs)
-echo "Generated Raw Transaction Hex: $rawtxhex"
+# Decode the generated raw transaction to see if it’s correct
+decodedtx=$(bitcoin-cli -regtest decoderawtransaction "$rawtx")
 
-# Debugging step: Check the structure of the raw transaction in detail.
-# Comment out the following block when not needed, it’s just for manual inspection
 echo "Decoded Raw Transaction Hex: "
-bitcoin-cli -regtest decoderawtransaction "$rawtxhex"
+echo $decodedtx
+
+# Disable debugging after execution
+set +x
