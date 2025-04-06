@@ -18,7 +18,7 @@ amount=20000000  # Amount in satoshis
 # Locktime in blocks (current block + 2 weeks worth of blocks)
 locktime=$(($current_block + 20160))
 
-# Create raw transaction
+# Create raw transaction with locktime properly formatted
 rawtxhex=$(bitcoin-cli -regtest createrawtransaction \
   "[ { \"txid\": \"$utxo_txid\", \"vout\": $utxo_vout } ]" \
   "{ \"$recipient\": $amount }" \
