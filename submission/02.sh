@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Define variables
-TXID="c8b0928edebbec5e698d5f86d0474595d9f6a5b2e4e3772cd9d1005f23bdef7725"
+TXID="c8b0928edebbec5e698d5f86d0474595d9f6a5b2e4e3772cd9d1005f23bdef7725"  # Corrected TXID (64 characters)
 VOUT=0
 AMOUNT=20000000  # 20,000,000 satoshis
 RECEIVER="2MvLcssW49n9atmksjwg2ZCMsEMsoj3pzUP"
