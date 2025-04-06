@@ -38,5 +38,18 @@ decodedtx2=$(bitcoin-cli -regtest decoderawtransaction "$rawtx")
 echo "Decoded Raw Transaction Hex: "
 echo $decodedtx2
 
+# Define the expected output (you can change this if the expected output is different)
+EXPECTED_OUTPUT="0200000002160ee5dd146316bb3400ede0d4ad512ab9c1ede486ab5a119a2ee9d4379fc1230000000000fdffffff160ee5dd146316bb3400ede0d4ad512ab9c1ede486ab5a119a2ee9d4379fc1230100000000fdffffff01002d31010000000017a91421ed90762e16eaaea188aae19142e5b25bf75d2387f9070000"
+
+# Check if the generated raw transaction matches the expected output
+if [[ "$rawtx" == "$EXPECTED_OUTPUT" ]]; then
+    echo "✅ Success: Raw Locked Transaction generation passed!"
+else
+    echo "❌ Error: Raw Locked Transaction generation failed!"
+    echo "Generated Transaction: $rawtx"
+    echo "Expected Transaction: $EXPECTED_OUTPUT"
+    exit 1
+fi
+
 # Disable debugging after execution
 set +x
