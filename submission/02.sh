@@ -13,6 +13,10 @@ decodedtx=$(bitcoin-cli -regtest decoderawtransaction "$transaction")
 txid=$(echo "$decodedtx" | jq -r '.vin[0].txid')
 vout=$(echo "$decodedtx" | jq -r '.vin[0].vout')
 
+# Print the extracted txid and vout for debugging
+echo "Extracted txid: $txid"
+echo "Extracted vout: $vout"
+
 # Define the recipient address and amount to send
 recipient="2MvLcssW49n9atmksjwg2ZCMsEMsoj3pzUP"
 amount=20000000  # Amount in satoshis (20,000,000 satoshis)
