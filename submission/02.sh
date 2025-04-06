@@ -22,7 +22,7 @@ locktime=$(($current_block + 20160))
 rawtxhex=$(bitcoin-cli -regtest createrawtransaction \
   "[ { \"txid\": \"$utxo_txid\", \"vout\": $utxo_vout } ]" \
   "{ \"$recipient\": $amount }" \
-  locktime=$locktime)
+  "{\"locktime\":$locktime}")
 
 # Print the raw transaction hex with locktime
 echo "Raw Transaction Hex with Locktime: $rawtxhex"
