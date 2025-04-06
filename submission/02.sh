@@ -15,7 +15,7 @@ amount=20000000
 
 locktime=$(($current_block + 20160))
 
-rawtxhex=$(bitcoin-cli -named createrawtransaction \
+rawtxhex=$(bitcoin-cli -regtest createrawtransaction \
   inputs='[ { "txid": "'$utxo_txid'", "vout": '$utxo_vout' } ]' \
   outputs='{ "'$recipient'": '$amount' }' \
   locktime=$locktime)
