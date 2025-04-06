@@ -20,7 +20,7 @@ recipient="2MvLcssW49n9atmksjwg2ZCMsEMsoj3pzUP"
 amount=20000000  # Amount in satoshis
 
 # Locktime in blocks (current block + 2 weeks worth of blocks)
-locktime=$(($current_block + 20160))
+locktime=$(($current_block + 2016))
 
 # Debug: Print the locktime value
 echo "Locktime: $locktime"
