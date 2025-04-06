@@ -4,10 +4,8 @@
 set -x
 
 # Define the transaction ID and vout from the given UTXO
-#txid="c8b0928edebbec5e698d5f86d0474595d9f6a5b2e4e3772cd9d1005f23bdef7725"
 txid="c8b0928edebbec5e698d5f86d0474595d9f6a5b2e4e3772cd9d1005f23bdef772"  # Correct 64-char TXID
-
-vout=0
+vout=0  # Index of the output in the UTXO
 
 # Define the recipient address and amount to send
 recipient="2MvLcssW49n9atmksjwg2ZCMsEMsoj3pzUP"
@@ -21,11 +19,23 @@ rawtx=$(bitcoin-cli -regtest createrawtransaction \
 '[ { "txid": "'$txid'", "vout": '$vout' } ]' \
 '{ "'$recipient'": '$amount' }' $locktime)
 
+# Check if the raw transaction was generated correctly
+if [[ -z "$rawtx" ]]; then
+    echo "Error: Failed to generate raw transaction."
+    exit 1
+fi
+
 echo "Generated Raw Transaction Hex: "
 echo $rawtx
 
 # Decode the generated raw transaction to see if it’s correct
 decodedtx=$(bitcoin-cli -regtest decoderawtransaction "$rawtx")
+
+# Check if the decoded transaction was successful
+if [[ -z "$decodedtx" ]]; then
+    echo "Error: Failed to decode the raw transaction."
+    exit 1
+fi
 
 echo "Decoded Raw Transaction Hex: "
 echo $decodedtx
