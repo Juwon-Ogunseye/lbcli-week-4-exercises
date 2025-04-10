@@ -18,15 +18,12 @@ rawtxhex="01000000000101c8b0928edebbec5e698d5f86d0474595d9f6a5b2e4e3772cd9d1005f
 # Decode the raw transaction to get the txid
 utxo_txid=$(bitcoin-cli -regtest -rpcwallet=btrustwallet decoderawtransaction $rawtxhex | jq -r ".txid")
 
-# Lock time calculation (6 * 24 * 14 + 25 = 2041)
-locktime=2041
-
 # Convert message to hex (ASCII to hex)
 message="btrust builder 2025"
 message_hex=$(echo -n "$message" | xxd -p)
 
-# Create the raw transaction with OP_RETURN and recipient output
-txhex=$(bitcoin-cli -regtest -rpcwallet=btrustwallet -named createrawtransaction inputs='''[{"txid":"'$utxo_txid'", "vout":0},{"txid":"'$utxo_txid'", "vout":1}]''' outputs='''{"'$receiver'": '$amount_btc', "data":"'$message_hex'"}''' locktime=$locktime)
+# Create the raw transaction with OP_RETURN and recipient output (data field comes first)
+txhex=$(bitcoin-cli -regtest -rpcwallet=btrustwallet -named createrawtransaction inputs='''[{"txid":"'$utxo_txid'", "vout":0},{"txid":"'$utxo_txid'", "vout":1}]''' outputs='''{"data":"'$message_hex'", "'$receiver'": '$amount_btc'}''')
 
 # Output the raw transaction hex
 echo $txhex
