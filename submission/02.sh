@@ -12,7 +12,7 @@ AMOUNT="0.2"  # in BTC (which is 20,000,000 satoshis)
 LOCKTIME=2041
 
 # Create raw transaction using bitcoin-cli
-RAW_TX=$(bitcoin-cli -testnet createrawtransaction \
+RAW_TX=$(bitcoin-cli -regtest createrawtransaction \
 '[{"txid":"'"$TXID"'","vout":'"$VOUT"'}]' \
 '{"'"$RECEIVER"'":'"$AMOUNT"'}' $LOCKTIME)
 
